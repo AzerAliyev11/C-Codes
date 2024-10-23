@@ -65,6 +65,70 @@ void con_string(char *str1, char *str2)
     *str1 = '\0';
 }
 
+int* LinearSearch(int* arr, int val, int size)
+{
+    int* begin = arr;
+    int *end = arr+size;
+
+    int i = 0;
+
+    while(begin < end)
+    {
+        if(*begin == val)
+        {
+            return begin;
+        }
+
+        begin++;
+    }
+
+    return NULL;
+}
+
+void InsertionSortP(int* arr, int size)
+{
+    for(int* begin = arr+1; begin < arr + size; begin++)
+    {
+        int insertValue = *begin;
+        int* j;
+        for(j = begin-1; j >= arr; j--)
+        {
+            if(insertValue < *j)
+            {
+                *(j+1) = *j;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        *(j+1) = insertValue;
+    }
+}
+
+void InsertionSort(int arr[], int size)
+{
+    for(int i = 1; i < size; i++)
+    {
+        int insertValue = arr[i];
+        int j;
+        for(j = i-1; j >= 0; j--)
+        {
+            if(insertValue < arr[j])
+            {
+                arr[j+1] = arr[j];
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        arr[j+1] = insertValue;
+    }
+}
+
 int main() {
 
     reverse_array();
