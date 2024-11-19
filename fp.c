@@ -1,46 +1,77 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// 8 3
-int asc(int a, int b)
+void InsertionSort(int *arr, int len, int (*comp)(int, int))
 {
-    return a-b;
-}
-
-// 3 8
-int desc(int a, int b)
-{
-    return b-a;
-}
-
-void shift_element(int *arr, int i, int (*fp) (int, int))
-{
-    int p;
-    for(p = arr[i]; i > 0 && fp(arr[i-1], p) > 0; i--)
+    for(int i = 1; i < len; i++)
     {
-        arr[i] = arr[i-1];
-    }
+        int insertVal = arr[i];
 
-    arr[i] = p;
-}
-
-void insertion_sort(int *arr, int size, int (*fp)(int, int))
-{
-    for(int i = 1; i < size; i++)
-    {
-        if(fp(arr[i-1], arr[i]) > 0)
+        int j;
+        for(j = i - 1; j >= 0; j--)
         {
-            shift_element(arr, i, fp);
+            if(comp(arr[j], insertVal) > 0)
+            {
+                arr[j+1] = arr[j];
+            }
+            else
+            {
+                break;
+            }
         }
+
+        arr[j+1] = insertVal;
     }
 }
 
-int main()
+void GenericArrayPrint(void* arr, int size, int len, void (*print_type)(void* val))
 {
-    int arr[5] = {3,4,2,6,5};
-    insertion_sort(arr, 5, asc);
-    for (int i = 0; i < 5; i++)
+    for(int i = 0; i < len; i++)
+    {
+        print_type(arr + i * size);
+        printf(" ");
+    }
+    printf("\n");
+}
+
+void print_int(void* intData)
+{
+    printf("%d", *(int*)intData);
+}
+
+void print_float(void* floatData)
+{
+    printf("%f", *(float*)floatData);
+}
+
+int Ascending(int a, int b)
+{
+    return a - b;
+}
+
+int Descending(int a, int b)
+{
+    return b - a;
+}
+
+void PrintArray(int* arr, int len)
+{
+    for(int i = 0; i < len; i++)
     {
         printf("%d ", arr[i]);
     }
     printf("\n");
+}
+
+int main()
+{
+    int arr[6] = {9,5,4,2,6,1};
+    int len = sizeof(arr)/sizeof(arr[0]);
+    InsertionSort(arr, len, Ascending);
+
+    //PrintArray(arr, len);
+    GenericArrayPrint(arr, sizeof(int), len, print_int);
+
+    float f_arr[3] = {3.14, 5.62, 9.82};
+    GenericArrayPrint(f_arr, sizeof(float), 3, print_float);
 }
